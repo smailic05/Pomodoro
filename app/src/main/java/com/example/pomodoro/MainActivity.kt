@@ -40,13 +40,13 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
 
     override fun start(id: Int) {
         activeTimer=id
-        changeStopwatch(id,null, true,null)
+        changeStopwatch(id, true, null)
     }
 
     override fun stop(id: Int, currentMs: Long,isFinish:Boolean?) {
         if(id==activeTimer)
             activeTimer=-1
-        changeStopwatch(id, currentMs, false,isFinish)
+        changeStopwatch(id, false, isFinish)
     }
 
 
@@ -57,16 +57,15 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
         stopwatchAdapter.submitList(stopwatches.toList())
     }
 
-    private fun changeStopwatch(id: Int, currentMs: Long?, isStarted: Boolean,isFinish:Boolean?) {
+    private fun changeStopwatch(id: Int, isStarted: Boolean, isFinish: Boolean?) {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, it.startTime,it.currentMs, isStarted,it.isFinish,it.timer))
-
+                newTimers.add(Stopwatch(it.id, it.startTime, it.currentMs, isStarted,isFinish?:it.isFinish,it.timer))
             }
             else if (it.isStarted && isFinish==null){
             it.timer?.cancel()
-            Stopwatch(it.id,  it.startTime,currentMs ?: it.currentMs, false,isFinish?:it.isFinish,it.timer)
+                newTimers.add(Stopwatch(it.id,  it.startTime, it.currentMs, false,isFinish?:it.isFinish,it.timer))
             }
             else {
                 newTimers.add(it)

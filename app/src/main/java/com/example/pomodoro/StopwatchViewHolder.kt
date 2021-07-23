@@ -50,7 +50,10 @@ class StopwatchViewHolder(
             }
         }
 
-        binding.deleteButton.setOnClickListener { listener.delete(stopwatch.id) }
+        binding.deleteButton.setOnClickListener {
+            setIsRecyclable(true)
+            listener.delete(stopwatch.id)
+        }
     }
 
     private fun startTimer(stopwatch: Stopwatch) {
@@ -64,6 +67,7 @@ class StopwatchViewHolder(
         binding.blinkingIndicator.isInvisible = false
         (binding.blinkingIndicator.background as? AnimationDrawable)?.start()
         binding.progressView.setPeriod(stopwatch.startTime)
+        stopwatch.isFinish=false
     }
 
     private fun stopTimer() {
