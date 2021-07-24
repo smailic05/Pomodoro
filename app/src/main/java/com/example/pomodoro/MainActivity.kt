@@ -9,8 +9,11 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pomodoro.databinding.ActivityMainBinding
+import com.example.pomodoro.stopwatch.Stopwatch
+import com.example.pomodoro.stopwatch.StopwatchAdapter
+import com.example.pomodoro.stopwatch.StopwatchListener
 
-class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
+class MainActivity : AppCompatActivity(), StopwatchListener,LifecycleObserver {
 
     private lateinit var binding: ActivityMainBinding
     private val stopwatchAdapter = StopwatchAdapter(this)
@@ -61,8 +64,10 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, it.startTime, it.currentTime, isStarted, it.timer, isFinished
-                    ?:it.isFinished))
+                newTimers.add(
+                    Stopwatch(it.id, it.startTime, it.currentTime, isStarted, it.timer, isFinished
+                    ?:it.isFinished)
+                )
             }
             else if (it.isStarted){
                 //если запущен, останавливаем

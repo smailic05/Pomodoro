@@ -1,4 +1,4 @@
-package com.example.pomodoro
+package com.example.pomodoro.stopwatch
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

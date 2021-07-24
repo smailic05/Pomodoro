@@ -1,11 +1,14 @@
-package com.example.pomodoro
+package com.example.pomodoro.stopwatch
 
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pomodoro.R
+import com.example.pomodoro.TEN_MS
 import com.example.pomodoro.databinding.StopwatchItemBinding
+import com.example.pomodoro.displayTime
 
 class StopwatchViewHolder(
     private val binding: StopwatchItemBinding,
