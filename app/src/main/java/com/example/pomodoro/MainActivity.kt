@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
 
 
         binding.addNewStopwatchButton.setOnClickListener {
-            val startTime= binding.editTime.text.toString().toLongOrNull()?.times(60000L) ?: 0L
-            stopwatches.add(Stopwatch(nextId++, startTime, currentMs = startTime, isStarted = false,false,null))
+            val startTime= binding.editTime.text.toString().toLongOrNull()?.times(60000) ?: 0
+            stopwatches.add(Stopwatch(nextId++, startTime, currentTime = startTime))
             stopwatchAdapter.submitList(stopwatches.toList())
         }
     }
@@ -57,15 +57,17 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
         stopwatchAdapter.submitList(stopwatches.toList())
     }
 
-    private fun changeStopwatch(id: Int, isStarted: Boolean, isFinish: Boolean?) {
+    private fun changeStopwatch(id: Int, isStarted: Boolean, isFinished: Boolean?) {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, it.startTime, it.currentMs, isStarted,isFinish?:it.isFinish,it.timer))
+                newTimers.add(Stopwatch(it.id, it.startTime, it.currentTime, isStarted, it.timer, isFinished
+                    ?:it.isFinished))
             }
-            else if (it.isStarted && isFinish==null){
+            else if (it.isStarted){
+                //если запущен, останавливаем
             it.timer?.cancel()
-                newTimers.add(Stopwatch(it.id,  it.startTime, it.currentMs, false,isFinish?:it.isFinish,it.timer))
+                newTimers.add(Stopwatch(it.id, it.startTime, it.currentTime, false, it.timer,it.isFinished))
             }
             else {
                 newTimers.add(it)
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity(),StopwatchListener,LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onAppBackgrounded() {
-        val startTime = stopwatchAdapter.currentList.find { it.id == activeTimer }?.currentMs ?: 0L
+        val startTime = stopwatchAdapter.currentList.find { it.id == activeTimer }?.currentTime ?: -1
         if(startTime>0) {
             val startIntent = Intent(this, ForegroundService::class.java)
             startIntent.putExtra(COMMAND_ID, COMMAND_START)

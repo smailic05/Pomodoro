@@ -21,7 +21,7 @@ class ForegroundService : Service() {
 
     private val builder by lazy {
         NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Simple Timer")
+            .setContentTitle("Pomodoro Timer")
             .setGroup("Timer")
             .setGroupSummary(false)
             .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -84,7 +84,8 @@ class ForegroundService : Service() {
                 commandStop()
             }
 
-        }.start()
+        }
+        timer!!.start()
     }
 
     private fun commandStop() {
